@@ -1,0 +1,12 @@
+.rps {
+  margin: auto;
+  margin-top: 9em;
+  display: flex;
+  justify-content: center;
+}
+
+.right {
+  background-color: #61b7f0;
+  width: 40rem;
+  height: 25rem;
+}

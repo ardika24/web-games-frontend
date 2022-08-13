@@ -1,0 +1,24 @@
+.home {
+  background-image: url("../public/images/sky1.png");
+  background-size: cover;
+  background-position: center;
+  max-width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.text {
+  line-height: 2em;
+}
+
+.loginButton {
+  margin-top: 1em;
+  width: 10rem;
+  font-weight: 700;
+  background-color: #002176;
+  justify-self: end;
+}

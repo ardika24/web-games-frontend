@@ -1,0 +1,32 @@
+.container {
+  margin-top: 5em;
+}
+
+.regForm {
+  background-color: #4d7bf1;
+  color: #ffffff;
+  margin: 2em;
+  padding: 3em;
+  border-radius: 1rem;
+}
+
+.regForm p {
+  align-self: center;
+}
+
+.p1 {
+  font-size: 13px;
+}
+
+.p2 {
+  font-style: italic;
+  font-size: 15px;
+  margin-top: 1em;
+}
+
+.regButton {
+  width: 18rem;
+  background-color: #002176;
+  justify-self: center;
+  margin-top: 1em;
+}

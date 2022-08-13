@@ -1,0 +1,18 @@
+.container {
+  margin-top: 5em;
+}
+
+.form {
+  margin-left: 19rem;
+}
+
+.right {
+  background-color: #4d7bf1;
+  border-radius: 1rem;
+}
+
+.loginButton {
+  width: 15rem;
+  background-color: #002176;
+  justify-self: end;
+}

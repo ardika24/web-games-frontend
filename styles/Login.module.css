@@ -1,0 +1,27 @@
+.container {
+  margin-top: 5em;
+}
+
+.loginForm {
+  background-color: #4d7bf1;
+  color: #ffffff;
+  margin: 2em;
+  padding: 3em;
+  border-radius: 1rem;
+}
+
+.loginForm p {
+  align-self: center;
+}
+
+.loginButton {
+  width: 18rem;
+  background-color: #002176;
+  justify-self: center;
+  margin-top: 1em;
+}
+
+.stick Image {
+  width: 1.8em;
+  justify-self: center;
+}
