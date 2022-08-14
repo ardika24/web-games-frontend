@@ -1,6 +1,26 @@
 import style from "../../../styles/TicTacToe.module.css";
 import { useState, useEffect } from "react";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Button } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  roundSelector,
+  setRound,
+  resetRound,
+  resetOutput,
+} from "../../../store/slices/round";
+import { scoreSelector } from "../../../store/slices/score";
+import Head from "next/head";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]";
+
+export async function getServerSideProps({ req, res }) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  const user = session.user;
+  return {
+    props: { user },
+  };
+}
 
 const defaultSquares = () => new Array(9).fill(null);
 
@@ -15,9 +35,17 @@ const lines = [
   [2, 4, 6],
 ];
 
-function TicTacToe() {
+function TicTacToe({ user }) {
   const [squares, setSquares] = useState(defaultSquares());
   const [winner, setWinner] = useState(null);
+  const { score } = useSelector(scoreSelector);
+  const { round } = useSelector(roundSelector);
+  const dispatch = useDispatch();
+
+  function roundReset() {
+    dispatch(resetRound());
+    dispatch(resetOutput());
+  }
 
   useEffect(() => {
     const isComputerTurn =
@@ -38,9 +66,11 @@ function TicTacToe() {
     const computerWon = linesThatAre("o", "o", "o").length > 0;
     if (playerWon) {
       setWinner("x");
+      dispatch(setRound());
     }
     if (computerWon) {
       setWinner("o");
+      dispatch(setRound());
     }
     const putComputerAt = (index) => {
       let newSquares = squares;
@@ -78,7 +108,7 @@ function TicTacToe() {
         emptyIndexes[Math.ceil(Math.random() * emptyIndexes.length)];
       putComputerAt(randomIndex);
     }
-  }, [squares]);
+  }, [dispatch, squares]);
 
   function Square(props) {
     return (
@@ -102,43 +132,64 @@ function TicTacToe() {
   }
 
   return (
-    <main>
-      <br />
-      <br />
-      <br />
-      <Board>
-        {squares.map((square, index) => (
-          <Square
-            key={index}
-            x={square === "x" ? 1 : 0}
-            o={square === "o" ? 1 : 0}
-            onClick={() => handleSquareClick(index)}
-          />
-        ))}
-      </Board>
-      {!!winner && winner === "x" && (
-        <div>
-          <Snackbar
-            open={true}
-            autoHideDuration={1000}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <Alert severity="success">You win!</Alert>
-          </Snackbar>
+    <>
+      <Head>
+        <title>Play! | Tic Tac Toe</title>
+      </Head>
+      <div className={style.tictac}>
+        <br />
+        <br />
+        <br />
+        <Board className={style.board}>
+          {squares.map((square, index) => (
+            <Square
+              className={style.square}
+              key={index}
+              x={square === "x" ? 1 : 0}
+              o={square === "o" ? 1 : 0}
+              onClick={() => handleSquareClick(index)}
+            />
+          ))}
+        </Board>
+        {!!winner && winner === "x" && (
+          <div>
+            <Snackbar
+              open={true}
+              autoHideDuration={1000}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert severity="success">You win!</Alert>
+            </Snackbar>
+          </div>
+        )}
+        {!!winner && winner === "o" && (
+          <div>
+            <Snackbar
+              open={true}
+              autoHideDuration={1000}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert severity="error">You lose!</Alert>
+            </Snackbar>
+          </div>
+        )}
+      </div>
+
+      <div className="row text-light text-center pt-5 mt-5 justify-content-center">
+        <h3>Your total score: {!score ? user.total_score : score}</h3>
+      </div>
+
+      <div className="row text-center text-light">
+        <div className="col">
+          <h4>
+            Current Round: <span>{round}</span>
+          </h4>
+          <Button variant="contained" onClick={() => roundReset()}>
+            Reset Round
+          </Button>
         </div>
-      )}
-      {!!winner && winner === "o" && (
-        <div>
-          <Snackbar
-            open={true}
-            autoHideDuration={1000}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <Alert severity="error">You lose!</Alert>
-          </Snackbar>
-        </div>
-      )}
-    </main>
+      </div>
+    </>
   );
 }
 
