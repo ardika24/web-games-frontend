@@ -44,7 +44,16 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user = token.user;
+      const userResponse = await fetch(
+        "http://localhost:4000/api/v1/auth/whoami",
+        {
+          headers: {
+            Authorization: token.user.accessToken,
+          },
+        }
+      );
+      const userData = await userResponse.json();
+      session.user = { accessToken: token.user.accessToken, ...userData };
       return session;
     },
     async jwt({ token, user }) {

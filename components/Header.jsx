@@ -80,7 +80,7 @@ function Header() {
             style={{ width: "11rem" }}
             className={currentRoute === "/" && "active"}
           >
-            <Image src={logo} alt="logo" style={{ width: "11rem" }} />
+            <Image src={logo} alt="logo" />
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
