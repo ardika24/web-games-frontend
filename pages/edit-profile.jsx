@@ -3,15 +3,30 @@ import style from "../styles/EditProfile.module.css";
 import { useState } from "react";
 import cn from "classnames";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { useRouter } from "next/router";
 
-export default function MyProfile() {
-  const { data: session } = useSession();
-  const [username, setUsername] = useState(session.user.username);
-  const [socmed, setSocMed] = useState(session.user.social_media_url ?? "");
-  const [city, setCity] = useState(session.user.city ?? "");
-  const [bio, setBio] = useState(session.user.bio ?? "");
+export async function getServerSideProps({ req, res }) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session) {
+    return {
+      props: {},
+    };
+  }
+  const user = session.user;
+  return {
+    props: { user },
+  };
+}
+
+export default function MyProfile({ user }) {
+  const router = useRouter();
+  const [username, setUsername] = useState(user.username);
+  const [socmed, setSocMed] = useState(user.social_media_url ?? "");
+  const [city, setCity] = useState(user.city ?? "");
+  const [bio, setBio] = useState(user.bio ?? "");
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event) {
@@ -22,7 +37,7 @@ export default function MyProfile() {
     setLoading(true);
 
     const response = await fetch(
-      `http://localhost:4000/api/v1/user/${session.user.id}`,
+      `http://localhost:4000/api/v1/user/${user.id}`,
       {
         method: "PUT",
         body: JSON.stringify({
@@ -33,7 +48,7 @@ export default function MyProfile() {
         }),
         headers: new Headers({
           "Content-Type": "application/json; charset=UTF-8",
-          Authorization: session.user.accessToken,
+          Authorization: user.accessToken,
         }),
       }
     );
@@ -41,6 +56,7 @@ export default function MyProfile() {
     if (response.ok) {
       setLoading(false);
       alert("Congratulations, your account has been successfully updated.");
+      router.push("/my-profile");
       //   navigate("/my-profile");
     } else {
       const data = await response.json();
@@ -73,7 +89,7 @@ export default function MyProfile() {
                 src="/images/cartoon.png"
                 alt="cartoon"
                 className="img-fluid"
-                style={{ width: "35em" }}
+                // style={{ width: "35em" }}
               />
             </div>
           </div>
@@ -91,7 +107,7 @@ export default function MyProfile() {
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        placeholder={`${session.user.username}  is your current username`}
+                        placeholder={`${user.username}  is your current username`}
                       />
                     </Form.Group>
 

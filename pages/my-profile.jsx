@@ -3,11 +3,34 @@ import style from "../styles/MyProfile.module.css";
 import cn from "classnames";
 import Head from "next/head";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+// import { getSession } from "next-auth/react";
 import Link from "next/link";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
-export default function MyProfile() {
-  const { data: session } = useSession();
+export async function getServerSideProps(context) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  console.log(session.user.city);
+  //   const { user } = session;
+  return {
+    props: session,
+  };
+}
+
+export default function MyProfile(session) {
+  //   const { data: session } = useSession();
 
   return (
     <>
@@ -28,7 +51,6 @@ export default function MyProfile() {
                 src="/images/cartoon.png"
                 alt="cartoon"
                 className="img-fluid"
-                style={{ width: "35em" }}
               />
             </div>
           </div>
@@ -51,7 +73,7 @@ export default function MyProfile() {
                   <h5>City:</h5>
                   <p>{session.user.city}</p>
                   <h5>Joined At:</h5>
-                  <p>{new Date(session.user.createdAt).toLocaleDateString()}</p>
+                  <p>{session.user.createdAt}</p>
                 </div>
                 <div className="row justify-content-center mt-3">
                   <Link href="/edit-profile" passHref>

@@ -1,7 +1,6 @@
 import { Carousel, Button, Col, Row, Card } from "react-bootstrap";
 import Link from "next/link";
 import style from "../styles/GameList.module.css";
-import { useEffect } from "react";
 import Image from "next/image";
 import Head from "next/head";
 
