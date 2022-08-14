@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
+import dayjs from "dayjs";
 
 export async function getServerSideProps(context) {
   const session = await unstable_getServerSession(
@@ -68,7 +69,7 @@ export default function MyProfile(session) {
                   <h5>City:</h5>
                   <p>{session.user.city}</p>
                   <h5>Joined At:</h5>
-                  <p>{session.user.createdAt}</p>
+                  <p>{dayjs(session.user.createdAt).format("MMM D, YYYY")}</p>
                 </div>
                 <div className="row justify-content-center mt-3">
                   <Link href="/edit-profile" passHref>
