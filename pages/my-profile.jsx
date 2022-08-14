@@ -3,7 +3,6 @@ import style from "../styles/MyProfile.module.css";
 import cn from "classnames";
 import Head from "next/head";
 import Image from "next/image";
-// import { getSession } from "next-auth/react";
 import Link from "next/link";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
@@ -22,16 +21,12 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  console.log(session.user.city);
-  //   const { user } = session;
   return {
     props: session,
   };
 }
 
 export default function MyProfile(session) {
-  //   const { data: session } = useSession();
-
   return (
     <>
       <Head>

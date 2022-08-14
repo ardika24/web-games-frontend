@@ -12,7 +12,10 @@ export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
   if (!session) {
     return {
-      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
     };
   }
   const user = session.user;
@@ -57,7 +60,6 @@ export default function MyProfile({ user }) {
       setLoading(false);
       alert("Congratulations, your account has been successfully updated.");
       router.push("/my-profile");
-      //   navigate("/my-profile");
     } else {
       const data = await response.json();
       setLoading(false);
@@ -89,7 +91,7 @@ export default function MyProfile({ user }) {
                 src="/images/cartoon.png"
                 alt="cartoon"
                 className="img-fluid"
-                // style={{ width: "35em" }}
+                priority
               />
             </div>
           </div>
