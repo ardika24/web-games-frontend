@@ -1,4 +1,3 @@
-
 import { Button } from "react-bootstrap";
 import style from "../styles/MyProfile.module.css";
 import cn from "classnames";
@@ -78,6 +77,11 @@ export default function MyProfile(session) {
                     </Button>
                   </Link>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
