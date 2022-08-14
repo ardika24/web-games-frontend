@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import style from "../styles/GameDetailRPS.module.css";
+import style from "../../styles/GameDetailRPS.module.css";
 import { Row, Col, Button, Table, Card } from "react-bootstrap";
 import cn from "classnames";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -36,7 +36,7 @@ export default function GameDetailRPS({ boards }) {
   return (
     <div>
       <Head>
-        <title>Game Detail RPS</title>
+        <title>Rock Paper Scissor</title>
       </Head>
       <section className={style.rps}>
         <Row>
