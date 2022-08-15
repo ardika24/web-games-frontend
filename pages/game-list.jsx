@@ -3,8 +3,20 @@ import Link from "next/link";
 import style from "../styles/GameList.module.css";
 import Image from "next/image";
 import Head from "next/head";
+import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import { rpsSelector } from "../store/slices/rpsPlayed";
+import { tictactoeSelector } from "../store/slices/tictactoePlayed";
+
+const Div = styled("div")(({ theme }) => ({
+  ...theme.typography.button,
+  backgroundColor: "ThreeDFace",
+  padding: theme.spacing(1),
+}));
 
 export default function GameList() {
+  const { rpsPlayed } = useSelector(rpsSelector);
+  const { ticPlayed } = useSelector(tictactoeSelector);
   return (
     <>
       <Head>
@@ -56,6 +68,7 @@ export default function GameList() {
                     <Link href="/rock-paper-scissor" passHref>
                       <Button type="button">Play Now!</Button>
                     </Link>
+                    {rpsPlayed && <Div>{"*ever played before"}</Div>}
                   </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
@@ -71,6 +84,7 @@ export default function GameList() {
                     <Link href="/tic-tac-toe" passHref>
                       <Button type="button">Play Now!</Button>
                     </Link>
+                    {ticPlayed && <Div>{"*ever played before"}</Div>}
                   </Carousel.Caption>
                 </Carousel.Item>
               </Carousel>

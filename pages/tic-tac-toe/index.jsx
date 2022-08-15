@@ -6,6 +6,11 @@ import { Row, Col, Button, Table, Card } from "react-bootstrap";
 import cn from "classnames";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  playedTrue,
+  tictactoeSelector,
+} from "../../store/slices/tictactoePlayed";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -32,6 +37,8 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function GameDetailTTT({ boards }) {
+  const { ticPlayed } = useSelector(tictactoeSelector);
+  const dispatch = useDispatch();
   return (
     <div>
       <Head>
@@ -41,6 +48,7 @@ export default function GameDetailTTT({ boards }) {
         <Row>
           <Col>
             <Card className="bg-dark text-white">
+              {ticPlayed && <h2>*ever played before</h2>}
               <Image
                 src="/images/tictactoe.png"
                 alt="rps"
@@ -54,6 +62,7 @@ export default function GameDetailTTT({ boards }) {
                       type="button"
                       variant="primary"
                       style={{ width: "13rem" }}
+                      onClick={() => dispatch(playedTrue())}
                     >
                       PLAY
                     </Button>
