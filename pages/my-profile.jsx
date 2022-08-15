@@ -14,14 +14,7 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions
   );
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+
   return {
     props: session,
   };

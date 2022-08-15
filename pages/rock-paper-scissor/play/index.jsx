@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-// import { getAccessToken } from "../store/slices/user";
 import { useSelector, useDispatch } from "react-redux";
-// import { userSelector } from "../store/slices/user";
 import {
   roundSelector,
   setRound,

@@ -10,21 +10,14 @@ import { useRouter } from "next/router";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+
   const user = session.user;
   return {
     props: { user },
   };
 }
 
-export default function MyProfile({ user }) {
+export default function EditProfile({ user }) {
   const router = useRouter();
   const [username, setUsername] = useState(user.username);
   const [socmed, setSocMed] = useState(user.social_media_url ?? "");
