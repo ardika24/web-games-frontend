@@ -52,7 +52,7 @@ export default function EditProfile({ user }) {
     if (response.ok) {
       setLoading(false);
       alert("Congratulations, your account has been successfully updated.");
-      router.push("/my-profile");
+      router.push("/my-profile").then(() => router.reload());
     } else {
       const data = await response.json();
       setLoading(false);
