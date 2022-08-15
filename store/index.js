@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./slices/user";
 import scoreReducer from "./slices/score";
 import roundReducer from "./slices/round";
+import RpsIsPlayedReducer from "./slices/rpsPlayed";
+import ticIsPlayedReducer from "./slices/tictactoePlayed";
 
 const store = configureStore({
   reducer: {
-    user: userReducer,
     score: scoreReducer,
     round: roundReducer,
+    rps: RpsIsPlayedReducer,
+    tictactoe: ticIsPlayedReducer,
   },
 });
 
