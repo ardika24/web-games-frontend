@@ -47,8 +47,9 @@ export default function Register() {
 
       if (data && data.error) {
         if (data.error.code === "auth/user-exist") {
-          alert("Username or email already exist, please login!");
-          signIn(undefined, { callbackUrl: "/login" });
+          if (confirm("Username or email already exist, want to login?")) {
+            signIn(undefined, { callbackUrl: "/login" });
+          }
         }
       }
     }
