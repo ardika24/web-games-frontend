@@ -10,6 +10,11 @@ import {
   resetOutput,
 } from "../../../store/slices/round";
 import { scoreSelector, currentScore } from "../../../store/slices/score";
+import {
+  pointsSelector,
+  addPoints,
+  resetPoints,
+} from "../../../store/slices/points";
 import { Snackbar, Alert, Button } from "@mui/material";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
@@ -30,6 +35,7 @@ export async function getServerSideProps({ req, res }) {
 export default function RockPaperScissor({ user }) {
   const { score } = useSelector(scoreSelector);
   const { round, output } = useSelector(roundSelector);
+  const { points } = useSelector(pointsSelector);
   const dispatch = useDispatch();
   const [point, setPoint] = useState(false);
   const [choice, setChoice] = useState("user");
@@ -83,6 +89,7 @@ export default function RockPaperScissor({ user }) {
       if (winScore.current.textContent === "You Win!") {
         scoreCount.current += 1;
         dispatch(outputWin());
+        dispatch(addPoints());
       }
 
       if (winScore.current.textContent === "You Lose!") {
@@ -129,6 +136,7 @@ export default function RockPaperScissor({ user }) {
   function roundReset() {
     dispatch(resetRound());
     dispatch(resetOutput());
+    dispatch(resetPoints());
   }
 
   function jsx_result() {
@@ -237,6 +245,9 @@ export default function RockPaperScissor({ user }) {
         {point && jsx_alert()}
         <div className="row text-light text-center pt-5 mt-5 justify-content-center">
           <h3>Your total score: {!score ? user.total_score : score}</h3>
+          <h5>
+            You&apos;ve got {points} points in {round - 1} rounds
+          </h5>
           <div className="col">
             <h3>{user.username}</h3>
           </div>
