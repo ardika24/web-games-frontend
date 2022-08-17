@@ -62,6 +62,11 @@ export const authOptions = {
       }
       return token;
     },
+    redirect: async (url, baseUrl) => {
+      if (url) {
+        return Promise.resolve("/home");
+      } else return baseUrl;
+    },
   },
 };
 

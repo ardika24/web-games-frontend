@@ -1,0 +1,17 @@
+.rotate {
+  transform: rotate(90deg);
+  transition: all 300ms;
+}
+
+.botRotate {
+  transform: rotate(-90deg);
+  transition: 300ms;
+}
+
+.box {
+  transition: 300ms;
+}
+
+.image {
+  cursor: pointer;
+}

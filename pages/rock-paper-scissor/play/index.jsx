@@ -10,11 +10,18 @@ import {
   resetOutput,
 } from "../../../store/slices/round";
 import { scoreSelector, currentScore } from "../../../store/slices/score";
+import {
+  pointsSelector,
+  addPoints,
+  resetPoints,
+} from "../../../store/slices/points";
 import { Snackbar, Alert, Button } from "@mui/material";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
+import style from "../../../styles/RockPaperScissor.module.css";
 import Image from "next/image";
 import Head from "next/head";
+import cn from "classnames";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -28,6 +35,7 @@ export async function getServerSideProps({ req, res }) {
 export default function RockPaperScissor({ user }) {
   const { score } = useSelector(scoreSelector);
   const { round, output } = useSelector(roundSelector);
+  const { points } = useSelector(pointsSelector);
   const dispatch = useDispatch();
   const [point, setPoint] = useState(false);
   const [choice, setChoice] = useState("user");
@@ -81,6 +89,7 @@ export default function RockPaperScissor({ user }) {
       if (winScore.current.textContent === "You Win!") {
         scoreCount.current += 1;
         dispatch(outputWin());
+        dispatch(addPoints());
       }
 
       if (winScore.current.textContent === "You Lose!") {
@@ -127,6 +136,7 @@ export default function RockPaperScissor({ user }) {
   function roundReset() {
     dispatch(resetRound());
     dispatch(resetOutput());
+    dispatch(resetPoints());
   }
 
   function jsx_result() {
@@ -235,6 +245,9 @@ export default function RockPaperScissor({ user }) {
         {point && jsx_alert()}
         <div className="row text-light text-center pt-5 mt-5 justify-content-center">
           <h3>Your total score: {!score ? user.total_score : score}</h3>
+          <h5>
+            You&apos;ve got {points} points in {round - 1} rounds
+          </h5>
           <div className="col">
             <h3>{user.username}</h3>
           </div>
@@ -256,43 +269,49 @@ export default function RockPaperScissor({ user }) {
 
         <div className="row align-items-center">
           <div className="col">
-            <div className="row justify-content-center p-3">
+            <div
+              className={cn(
+                style.box,
+                choice === "rock" && style.rotate,
+                "row justify-content-center p-3"
+              )}
+            >
               <Image
+                className={style.image}
                 width="120rem"
                 height="100rem"
-                style={{
-                  cursor: "pointer",
-                  transform: choice === "rock" ? "rotate(90deg)" : "",
-                  transition: "300ms",
-                }}
                 onClick={handleURockClick}
                 src="/images/userRock.png"
                 alt="user"
               />
             </div>
-            <div className="row justify-content-center p-3">
+            <div
+              className={cn(
+                style.box,
+                choice === "paper" && style.rotate,
+                "row justify-content-center p-3"
+              )}
+            >
               <Image
+                className={style.image}
                 width="90rem"
                 height="120rem"
-                style={{
-                  cursor: "pointer",
-                  transform: choice === "paper" ? "rotate(90deg)" : "",
-                  transition: "300ms",
-                }}
                 onClick={handleUPaperClick}
                 src="/images/userPaper.png"
                 alt="user"
               />
             </div>
-            <div className="row justify-content-center p-3">
+            <div
+              className={cn(
+                style.box,
+                choice === "scissor" && style.rotate,
+                "row justify-content-center p-3"
+              )}
+            >
               <Image
+                className={style.image}
                 width="120rem"
                 height="120rem"
-                style={{
-                  cursor: "pointer",
-                  transform: choice === "scissor" ? "rotate(90deg)" : "",
-                  transition: "300ms",
-                }}
                 onClick={handleUScissorClick}
                 src="/images/userScissors.png"
                 alt="user"
@@ -305,38 +324,44 @@ export default function RockPaperScissor({ user }) {
             </h1>
           </div>
           <div className="col">
-            <div className="row justify-content-center p-3">
+            <div
+              className={cn(
+                style.box,
+                botChoice === "rock" && style.botRotate,
+                "row justify-content-center p-3"
+              )}
+            >
               <Image
                 width="120rem"
                 height="100rem"
-                style={{
-                  transform: botChoice === "rock" ? "rotate(-90deg)" : "",
-                  transition: "300ms",
-                }}
                 src="/images/comRock.png"
                 alt="com"
               />
             </div>
-            <div className="row justify-content-center p-3">
+            <div
+              className={cn(
+                style.box,
+                botChoice === "paper" && style.botRotate,
+                "row justify-content-center p-3"
+              )}
+            >
               <Image
                 width="90rem"
                 height="120rem"
-                style={{
-                  transform: botChoice === "paper" ? "rotate(-90deg)" : "",
-                  transition: "300ms",
-                }}
                 src="/images/comPaper.png"
                 alt="com"
               />
             </div>
-            <div className="row justify-content-center p-3">
+            <div
+              className={cn(
+                style.box,
+                botChoice === "scissor" && style.botRotate,
+                "row justify-content-center p-3"
+              )}
+            >
               <Image
                 width="120rem"
                 height="120rem"
-                style={{
-                  transform: botChoice === "scissor" ? "rotate(-90deg)" : "",
-                  transition: "300ms",
-                }}
                 src="/images/comScissors.png"
                 alt="com"
               />
