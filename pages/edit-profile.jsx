@@ -7,6 +7,8 @@ import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { useRouter } from "next/router";
+import swal from 'sweetalert';
+
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -24,6 +26,10 @@ export default function EditProfile({ user }) {
   const [city, setCity] = useState(user.city ?? "");
   const [bio, setBio] = useState(user.bio ?? "");
   const [loading, setLoading] = useState(false);
+
+  // function reminder{
+  //   swal("Good job!", "You clicked the button!", "success")
+  // }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -50,9 +56,17 @@ export default function EditProfile({ user }) {
     );
 
     if (response.ok) {
+      swal("Click on either the button or outside the modal.")
+        .then(router.push("/my-profile")
+        );
       setLoading(false);
-      alert("Congratulations, your account has been successfully updated.");
-      router.push("/my-profile").then(() => router.reload());
+      
+      
+      
+
+      // alert("Congratulations, your account has been successfully updated.");
+      
+     
     } else {
       const data = await response.json();
       setLoading(false);
