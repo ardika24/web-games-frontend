@@ -7,9 +7,7 @@ import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { useRouter } from "next/router";
-import swal from 'sweetalert';
-
-
+import swal from "sweetalert";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -27,7 +25,6 @@ export default function EditProfile({ user }) {
   const [city, setCity] = useState(user.city ?? "");
   const [bio, setBio] = useState(user.bio ?? "");
   const [loading, setLoading] = useState(false);
-
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -57,21 +54,18 @@ export default function EditProfile({ user }) {
       swal("Good job!", "Updated Success", "success", {
         buttons: {
           catch: {
-            value: "Done",
-          }
+            value: "OK",
+          },
         },
-      })
-      .then((value) => {
+      }).then((value) => {
         switch (value) {
-       
-          case "catch":
+          case "OK":
             router.push("/my-profile").then(() => router.reload());
             break;
-       
         }
       });
       setLoading(false);
-   } else {
+    } else {
       const data = await response.json();
       setLoading(false);
       if (data && data.error) {
@@ -79,8 +73,7 @@ export default function EditProfile({ user }) {
           swal("Username already taken! Please choose another one", {
             icon: "warning",
             buttons: true,
-            
-          })
+          });
         }
       }
     }
