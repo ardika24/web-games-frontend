@@ -53,7 +53,7 @@ export default function EditProfile({ user }) {
     if (response.ok) {
       swal("Good job!", "Updated Success", "success", {
         buttons: {
-          catch: {
+          OK: {
             value: "OK",
           },
         },
