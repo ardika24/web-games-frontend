@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import swal from 'sweetalert';
 
 
+
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
 
@@ -27,9 +28,6 @@ export default function EditProfile({ user }) {
   const [bio, setBio] = useState(user.bio ?? "");
   const [loading, setLoading] = useState(false);
 
-  // function reminder{
-  //   swal("Good job!", "You clicked the button!", "success")
-  // }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -56,23 +54,33 @@ export default function EditProfile({ user }) {
     );
 
     if (response.ok) {
-      swal("Click on either the button or outside the modal.")
-        .then(router.push("/my-profile")
-        );
+      swal("Good job!", "Updated Success", "success", {
+        buttons: {
+          catch: {
+            value: "Done",
+          }
+        },
+      })
+      .then((value) => {
+        switch (value) {
+       
+          case "catch":
+            router.push("/my-profile").then(() => router.reload());
+            break;
+       
+        }
+      });
       setLoading(false);
-      
-      
-      
-
-      // alert("Congratulations, your account has been successfully updated.");
-      
-     
-    } else {
+   } else {
       const data = await response.json();
       setLoading(false);
       if (data && data.error) {
         if (data.error.name === "SequelizeUniqueConstraintError") {
-          alert("Username already taken! Please choose another one");
+          swal("Username already taken! Please choose another one", {
+            icon: "warning",
+            buttons: true,
+            
+          })
         }
       }
     }

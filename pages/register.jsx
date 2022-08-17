@@ -5,6 +5,7 @@ import style from "../styles/Register.module.css";
 import cn from "classnames";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import swal from 'sweetalert';
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -32,14 +33,31 @@ export default function Register() {
     });
 
     if (response.ok) {
-      await signIn("credentials", {
-        email,
-        username,
-        password,
-        callbackUrl: "/home",
-      });
+     
+      swal("Good job!", "Register Success", "success",{
+          buttons: {
+            catch: {
+              text: "Done",
+              value: "catch",
+            }
+          },
+        })
+        .then((value) => {
+          switch (value) {
+            case "catch":
+               signIn("credentials", {
+                email,
+                username,
+                password,
+                callbackUrl: "/home",
+              })
+              break;
+          }
+        })
+
       setLoading(false);
-      alert("Register Success");
+
+
     } else {
       const data = await response.json();
 
