@@ -1,3 +1,17 @@
+# Web Games Frontend Chapter 10
+
+## Setup for development
+
+- Fork repository ini. Ada tombol 'fork' di kanan atas.
+- Clone repository `git clone https://github.com/{username_kalian}/web-games-frontend.git`
+- Pindah ke folder repository yang sudah di clone dengan command `cd web-games-frontend`.
+- Instal dependencies `npm install`.
+- Duplikat file `.env.example` lalu rename menjadi `.env.lokal`
+- Dapatkan random SECRET melalui terminal dengan command `openssl rand -base64 32`
+- Copy random SECRET yg didapatkan ke dalam file `.env.lokal`
+- Sesuaikan isi file `.env.local` dengan data masing masing.
+- Jalankan aplikasi `npm run dev`
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
