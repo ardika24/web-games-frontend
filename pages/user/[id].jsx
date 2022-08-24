@@ -32,7 +32,7 @@ export default function UserProfile({ profile }) {
   return (
     <>
       <Head>
-        <title>Profile Information - Binar Games</title>
+        <title>{`${profile.username} Profile Information - Binar Games`}</title>
       </Head>
       <div className={style.content}>
         <div className="row justify-content-center">

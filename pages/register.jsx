@@ -5,7 +5,7 @@ import style from "../styles/Register.module.css";
 import cn from "classnames";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -33,31 +33,18 @@ export default function Register() {
     });
 
     if (response.ok) {
-     
-      swal("Good job!", "Register Success", "success",{
-          buttons: {
-            catch: {
-              text: "Done",
-              value: "catch",
-            }
-          },
-        })
-        .then((value) => {
-          switch (value) {
-            case "catch":
-               signIn("credentials", {
-                email,
-                username,
-                password,
-                callbackUrl: "/home",
-              })
-              break;
-          }
-        })
+      swal("Good job!", "Register Success", "success", {
+        buttons: "Done",
+      }).then(() => {
+        signIn("credentials", {
+          email,
+          username,
+          password,
+          callbackUrl: "/home",
+        });
+      });
 
       setLoading(false);
-
-
     } else {
       const data = await response.json();
 
@@ -124,8 +111,8 @@ export default function Register() {
                 />
               </Form.Group>
               <p className={style.p1}>
-                By clicking the register button, I’m 16 years of age or older
-                and accept the Cloud Terms of Service and acknowledge the
+                By clicking the register button, I&apos;m 16 years of age or
+                older and accept the Cloud Terms of Service and acknowledge the
                 Privacy Policy.
               </p>
               <Button type="submit" className={style.regButton}>
@@ -133,12 +120,12 @@ export default function Register() {
               </Button>
             </Form>
             <p className={style.p2}>
-              *if success, you’ll be redirected to the Log in page
+              *if success, you&apos;ll be redirected to the Log in page
             </p>
             <p>
               Already have an account?{" "}
-              <Link href="/login" passHref className="text-light text-center">
-                Log in here
+              <Link href="/login">
+                <a className="text-light text-center">Log in here</a>
               </Link>
             </p>
           </div>

@@ -28,7 +28,7 @@ function HomePage() {
   return (
     <>
       <Head>
-        <title>Lets start play some games - Binar Games</title>
+        <title>{`${session.user.username} Lets start play some games - Binar Games`}</title>
       </Head>
       <div className={style.home}>
         <div className="container-fluid">

@@ -62,10 +62,26 @@ export const authOptions = {
       }
       return token;
     },
-    redirect: async (url, baseUrl) => {
-      if (url) {
-        return Promise.resolve("/home");
-      } else return baseUrl;
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLsif
+      if (url.startsWith("/")) {
+        if (url === "/") {
+          return `${baseUrl}/home`;
+        }
+
+        return `${baseUrl}${url}`;
+      }
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) {
+        const parseUrl = new URL(url);
+        if (parseUrl.pathname === "/") {
+          return `${baseUrl}/home`;
+        }
+
+        return url;
+      }
+
+      return baseUrl;
     },
   },
 };

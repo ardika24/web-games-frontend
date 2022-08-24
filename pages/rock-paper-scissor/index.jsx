@@ -109,7 +109,7 @@ export default function GameDetailRPS({ boards }) {
                           <td>{index + 1}</td>
                           <td>
                             <Link href={`/user/${board.id}`}>
-                              {board.username}
+                              <a>{board.username}</a>
                             </Link>
                           </td>
                           <td>{board.total_score}</td>
