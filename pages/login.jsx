@@ -72,8 +72,8 @@ export default function Login({ csrfToken }) {
           </div>
           <p>
             Don&apos;t have an account?{" "}
-            <Link href="/register" passHref className="text-light text-center">
-              Register
+            <Link href="/register">
+              <a className="text-light text-center">Register</a>
             </Link>
           </p>
         </div>

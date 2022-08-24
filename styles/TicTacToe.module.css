@@ -3,12 +3,14 @@
   width: 300px;
   margin: 50px auto 0;
 }
+
 .board {
   display: grid;
   border: 2px solid #fff;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 }
+
 .square {
   width: 100px;
   height: 100px;
@@ -17,11 +19,13 @@
   font-size: 4rem;
   text-align: center;
 }
+
 .resultGreen {
   font-size: 2rem;
   padding: 10px;
   background-color: #5a5;
 }
+
 .resultRed {
   font-size: 2rem;
   padding: 10px;
