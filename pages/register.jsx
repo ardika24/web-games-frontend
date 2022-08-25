@@ -1,11 +1,12 @@
-import { useState } from "react";
 import Head from "next/head";
-import { Form, Button } from "react-bootstrap";
-import style from "../styles/Register.module.css";
-import cn from "classnames";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { Form, Button } from "react-bootstrap";
+import cn from "classnames";
 import swal from "sweetalert";
+import apiFetch from "../utils/apiFetch";
+import style from "../styles/Register.module.css";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ export default function Register() {
 
     setLoading(true);
 
-    const response = await fetch("http://localhost:4000/api/v1/auth/register", {
+    const response = await apiFetch("/api/v1/auth/register", {
       method: "POST",
       body: JSON.stringify({
         email,

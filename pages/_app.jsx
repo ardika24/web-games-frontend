@@ -1,11 +1,11 @@
-import "nprogress/nprogress.css";
 import Router from "next/router";
-import nProgress from "nprogress";
 import { SessionProvider } from "next-auth/react";
+import { Provider } from "react-redux";
+import nProgress from "nprogress";
+import "nprogress/nprogress.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
 import Header from "../components/Header";
-import { Provider } from "react-redux";
 import store from "../store";
 
 Router.events.on("routeChangeStart", nProgress.start);

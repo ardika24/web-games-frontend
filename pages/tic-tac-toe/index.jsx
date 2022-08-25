@@ -1,25 +1,23 @@
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
-import style from "../../styles/GameDetailTTT.module.css";
+import Image from "next/image";
+import { unstable_getServerSession } from "next-auth";
+import { useSelector, useDispatch } from "react-redux";
 import { Row, Col, Button, Table, Card } from "react-bootstrap";
 import cn from "classnames";
-import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { useSelector, useDispatch } from "react-redux";
 import {
   playedTrue,
   tictactoeSelector,
 } from "../../store/slices/tictactoePlayed";
+import apiFetch from "../../utils/apiFetch";
+import style from "../../styles/GameDetailTTT.module.css";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  const response = await fetch(
-    "http://localhost:4000/api/v1/games/high-score",
-    {
-      headers: { Authorization: session.user.accessToken },
-    }
-  );
+  const response = await apiFetch("/api/v1/games/high-score", {
+    headers: { Authorization: session.user.accessToken },
+  });
 
   if (response.status === 404) {
     return {

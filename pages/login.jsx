@@ -1,12 +1,12 @@
-import { getCsrfToken } from "next-auth/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import style from "../styles/Login.module.css";
-import cn from "classnames";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { getCsrfToken } from "next-auth/react";
 import { Form, Button, Alert } from "react-bootstrap";
+import cn from "classnames";
 import stick from "../public/images/stick.png";
+import style from "../styles/Login.module.css";
 
 export async function getServerSideProps(context) {
   return {
