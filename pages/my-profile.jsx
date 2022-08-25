@@ -1,12 +1,12 @@
-import { Button } from "react-bootstrap";
-import style from "../styles/MyProfile.module.css";
-import cn from "classnames";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { Button } from "react-bootstrap";
+import cn from "classnames";
 import dayjs from "dayjs";
+import { authOptions } from "./api/auth/[...nextauth]";
+import style from "../styles/MyProfile.module.css";
 
 export async function getServerSideProps(context) {
   const session = await unstable_getServerSession(

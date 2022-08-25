@@ -1,13 +1,14 @@
-import { Button, Form, Col, Row } from "react-bootstrap";
-import style from "../styles/EditProfile.module.css";
-import { useState } from "react";
-import cn from "classnames";
-import Image from "next/image";
 import Head from "next/head";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import { unstable_getServerSession } from "next-auth";
+import { useState } from "react";
+import { Button, Form, Col, Row } from "react-bootstrap";
+import cn from "classnames";
 import swal from "sweetalert";
+import { authOptions } from "./api/auth/[...nextauth]";
+import apiFetch from "../utils/apiFetch";
+import style from "../styles/EditProfile.module.css";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -33,22 +34,19 @@ export default function EditProfile({ user }) {
 
     setLoading(true);
 
-    const response = await fetch(
-      `http://localhost:4000/api/v1/user/${user.id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          username,
-          social_media_url: socmed,
-          city,
-          bio,
-        }),
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Authorization: user.accessToken,
-        }),
-      }
-    );
+    const response = await apiFetch(`/api/v1/user/${user.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        username,
+        social_media_url: socmed,
+        city,
+        bio,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: user.accessToken,
+      }),
+    });
 
     if (response.ok) {
       swal("Good job!", "Updated Success", "success", {

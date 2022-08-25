@@ -1,7 +1,8 @@
-import style from "../../../styles/TicTacToe.module.css";
+import Head from "next/head";
+import { unstable_getServerSession } from "next-auth";
 import { useState, useEffect } from "react";
-import { Snackbar, Alert, Button } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
+import { Snackbar, Alert, Button } from "@mui/material";
 import {
   roundSelector,
   setRound,
@@ -9,9 +10,8 @@ import {
   resetOutput,
 } from "../../../store/slices/round";
 import { scoreSelector } from "../../../store/slices/score";
-import Head from "next/head";
-import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
+import style from "../../../styles/TicTacToe.module.css";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);

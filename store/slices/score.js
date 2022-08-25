@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import apiFetch from "../../utils/apiFetch";
 
 const initialState = {
   score: null,
@@ -39,7 +40,7 @@ export function currentScore() {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/api/v1/auth/whoami", {
+      const response = await apiFetch("/api/v1/auth/whoami", {
         headers: new Headers({ Authorization: accessToken }),
       });
 

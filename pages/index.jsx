@@ -1,8 +1,8 @@
+import Head from "next/head";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
 import cn from "classnames";
 import style from "../styles/LandingPage.module.css";
-import Head from "next/head";
 
 export default function LandingPage() {
   return (
