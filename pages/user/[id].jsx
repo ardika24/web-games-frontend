@@ -11,15 +11,6 @@ export async function getServerSideProps({ req, res, params }) {
     headers: { Authorization: session.user.accessToken },
   });
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
   if (response.status === 404) {
     return {
       notFound: true,
