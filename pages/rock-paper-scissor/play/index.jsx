@@ -3,6 +3,7 @@ import Image from "next/image";
 import { unstable_getServerSession } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Button } from "react-bootstrap";
 import cn from "classnames";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import {
@@ -21,7 +22,6 @@ import {
 } from "../../../store/slices/points";
 import apiFetch from "../../../utils/apiFetch";
 import style from "../../../styles/RockPaperScissor.module.css";
-import { Button } from "react-bootstrap";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
