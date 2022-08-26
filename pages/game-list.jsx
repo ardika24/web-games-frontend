@@ -3,20 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { Carousel, Button, Col, Row, Card } from "react-bootstrap";
-import { styled } from "@mui/material/styles";
-import { rpsSelector } from "../store/slices/rpsPlayed";
-import { tictactoeSelector } from "../store/slices/tictactoePlayed";
+import { rpsSelector } from "../store/slices/playedGames";
 import style from "../styles/GameList.module.css";
 
-const Div = styled("div")(({ theme }) => ({
-  ...theme.typography.button,
-  backgroundColor: "ThreeDFace",
-  padding: theme.spacing(1),
-}));
-
 export default function GameList() {
-  const { rpsPlayed } = useSelector(rpsSelector);
-  const { ticPlayed } = useSelector(tictactoeSelector);
+  const { games } = useSelector(rpsSelector);
+  const rps = games.find((e) => e.title === "rps");
+  const tic = games.find((e) => e.title === "tictactoe");
   return (
     <>
       <Head>
@@ -68,7 +61,11 @@ export default function GameList() {
                     <Link href="/rock-paper-scissor" passHref>
                       <Button type="button">Play Now!</Button>
                     </Link>
-                    {rpsPlayed && <Div>{"*ever played before"}</Div>}
+                    {rps && (
+                      <p className="text-dark">
+                        <i>*ever played before</i>
+                      </p>
+                    )}
                   </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
@@ -84,7 +81,11 @@ export default function GameList() {
                     <Link href="/tic-tac-toe" passHref>
                       <Button type="button">Play Now!</Button>
                     </Link>
-                    {ticPlayed && <Div>{"*ever played before"}</Div>}
+                    {tic && (
+                      <p className="text-dark">
+                        <i>*ever played before</i>
+                      </p>
+                    )}
                   </Carousel.Caption>
                 </Carousel.Item>
               </Carousel>

@@ -7,9 +7,10 @@ import { Row, Col, Button, Table, Card } from "react-bootstrap";
 import cn from "classnames";
 import { authOptions } from "../api/auth/[...nextauth]";
 import {
-  playedTrue,
-  tictactoeSelector,
-} from "../../store/slices/tictactoePlayed";
+  addPlayedGames,
+  games,
+  rpsSelector,
+} from "../../store/slices/playedGames";
 import apiFetch from "../../utils/apiFetch";
 import style from "../../styles/GameDetailTTT.module.css";
 
@@ -35,7 +36,8 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function GameDetailTTT({ boards }) {
-  const { ticPlayed } = useSelector(tictactoeSelector);
+  const { games } = useSelector(rpsSelector);
+  const tic = games.find((e) => e.title === "tictactoe");
   const dispatch = useDispatch();
   return (
     <div>
@@ -46,7 +48,7 @@ export default function GameDetailTTT({ boards }) {
         <Row>
           <Col>
             <Card className="bg-dark text-white">
-              {ticPlayed && <h2>*ever played before</h2>}
+              {tic && <h2>*ever played before</h2>}
               <Image
                 src="/images/tictactoe.png"
                 alt="rps"
@@ -60,7 +62,7 @@ export default function GameDetailTTT({ boards }) {
                       type="button"
                       variant="primary"
                       style={{ width: "13rem" }}
-                      onClick={() => dispatch(playedTrue())}
+                      onClick={() => dispatch(addPlayedGames("tictactoe"))}
                     >
                       PLAY
                     </Button>
