@@ -2,14 +2,13 @@ import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Snackbar, Alert, Button } from "@mui/material";
+import { Button } from "react-bootstrap";
 import {
   roundSelector,
   setRound,
   resetRound,
   resetOutput,
 } from "../../../store/slices/round";
-import { scoreSelector } from "../../../store/slices/score";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import style from "../../../styles/TicTacToe.module.css";
 
@@ -38,7 +37,6 @@ const lines = [
 function TicTacToe({ user }) {
   const [squares, setSquares] = useState(defaultSquares());
   const [winner, setWinner] = useState(null);
-  const { score } = useSelector(scoreSelector);
   const { round } = useSelector(roundSelector);
   const dispatch = useDispatch();
 
@@ -153,30 +151,14 @@ function TicTacToe({ user }) {
         </Board>
         {!!winner && winner === "x" && (
           <div>
-            <Snackbar
-              open={true}
-              autoHideDuration={1000}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <Alert severity="success">You win!</Alert>
-            </Snackbar>
+            <h3>You Win!</h3>
           </div>
         )}
         {!!winner && winner === "o" && (
           <div>
-            <Snackbar
-              open={true}
-              autoHideDuration={1000}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <Alert severity="error">You lose!</Alert>
-            </Snackbar>
+            <h3>You Lose!</h3>
           </div>
         )}
-      </div>
-
-      <div className="row text-light text-center pt-5 mt-5 justify-content-center">
-        <h3>Your total score: {!score ? user.total_score : score}</h3>
       </div>
 
       <div className="row text-center text-light">
@@ -184,9 +166,7 @@ function TicTacToe({ user }) {
           <h4>
             Current Round: <span>{round}</span>
           </h4>
-          <Button variant="contained" onClick={() => roundReset()}>
-            Reset Round
-          </Button>
+          <Button onClick={() => roundReset()}>Reset Round</Button>
         </div>
       </div>
     </>
