@@ -22,6 +22,7 @@ import style from "../../../styles/RockPaperScissor.module.css";
 import Image from "next/image";
 import Head from "next/head";
 import cn from "classnames";
+import apiFetch from "../../../utils/apiFetch";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -107,19 +108,16 @@ export default function RockPaperScissor({ user }) {
   useEffect(() => {
     async function addScore() {
       if (scoreCount.current >= 1) {
-        const response = await fetch(
-          `http://localhost:4000/api/v1/user/${user.id}`,
-          {
-            method: "PUT",
-            body: JSON.stringify({
-              total_score: 10,
-            }),
-            headers: new Headers({
-              "Content-Type": "application/json; charset=UTF-8",
-              Authorization: user.accessToken,
-            }),
-          }
-        );
+        const response = await apiFetch(`/api/v1/user/${user.id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            total_score: 10,
+          }),
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Authorization: user.accessToken,
+          }),
+        });
 
         if (response.ok) {
           dispatch(currentScore());
@@ -142,7 +140,8 @@ export default function RockPaperScissor({ user }) {
   function jsx_result() {
     if (output === "You Win") {
       return (
-        <div>
+        <div id="snackbar">
+          {/* Round { round - 1 } result: {output} */}
           <Snackbar
             open={true}
             autoHideDuration={1000}

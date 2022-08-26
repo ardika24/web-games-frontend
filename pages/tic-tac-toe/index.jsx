@@ -11,15 +11,13 @@ import {
   playedTrue,
   tictactoeSelector,
 } from "../../store/slices/tictactoePlayed";
+import apiFetch from "../../utils/apiFetch";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  const response = await fetch(
-    "http://localhost:4000/api/v1/games/high-score",
-    {
-      headers: { Authorization: session.user.accessToken },
-    }
-  );
+  const response = await apiFetch("/api/v1/games/high-score", {
+    headers: { Authorization: session.user.accessToken },
+  });
 
   if (response.status === 404) {
     return {

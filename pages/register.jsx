@@ -5,6 +5,7 @@ import style from "../styles/Register.module.css";
 import cn from "classnames";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import apiFetch from "../utils/apiFetch";
 import swal from "sweetalert";
 
 export default function Register() {
@@ -20,7 +21,7 @@ export default function Register() {
 
     setLoading(true);
 
-    const response = await fetch("http://localhost:4000/api/v1/auth/register", {
+    const response = await apiFetch("/api/v1/auth/register", {
       method: "POST",
       body: JSON.stringify({
         email,

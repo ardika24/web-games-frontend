@@ -8,9 +8,19 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
+import apiFetch from "../utils/apiFetch";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
   const user = session.user;
   return {
@@ -33,22 +43,19 @@ export default function EditProfile({ user }) {
 
     setLoading(true);
 
-    const response = await fetch(
-      `http://localhost:4000/api/v1/user/${user.id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          username,
-          social_media_url: socmed,
-          city,
-          bio,
-        }),
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Authorization: user.accessToken,
-        }),
-      }
-    );
+    const response = await apiFetch(`/api/v1/user/${user.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        username,
+        social_media_url: socmed,
+        city,
+        bio,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: user.accessToken,
+      }),
+    });
 
     if (response.ok) {
       swal("Good job!", "Updated Success", "success", {
