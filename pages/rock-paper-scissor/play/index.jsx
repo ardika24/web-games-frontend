@@ -26,6 +26,15 @@ import style from "../../../styles/RockPaperScissor.module.css";
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   const user = session.user;
   return {
     props: { user },
