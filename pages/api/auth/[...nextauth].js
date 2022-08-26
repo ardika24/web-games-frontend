@@ -13,6 +13,7 @@ export const authOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials, req) {
         const authResponse = await apiFetch("/api/v1/auth/login", {
           method: "POST",
