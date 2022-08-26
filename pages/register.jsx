@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
@@ -10,7 +9,6 @@ import apiFetch from "../utils/apiFetch";
 import style from "../styles/Register.module.css";
 
 export default function Register() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -55,17 +53,9 @@ export default function Register() {
 
       if (data && data.error) {
         if (data.error.code === "auth/user-exist") {
-          swal({
-            title: "Username or email already exist!",
-            text: "Login instead?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-          }).then((login) => {
-            if (login) {
-              router.push("/login");
-            }
-          });
+          if (confirm("Username or email already exist, want to login?")) {
+            signIn(undefined, { callbackUrl: "/login" });
+          }
         }
       }
     }
