@@ -1,9 +1,10 @@
 import Head from "next/head";
-import style from "../../styles/UserProfile.module.css";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]";
 import dayjs from "dayjs";
+import { authOptions } from "../api/auth/[...nextauth]";
 import apiFetch from "../../utils/apiFetch";
+import style from "../../styles/UserProfile.module.css";
+
 
 export async function getServerSideProps({ req, res, params }) {
   const session = await unstable_getServerSession(req, res, authOptions);

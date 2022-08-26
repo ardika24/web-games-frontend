@@ -1,12 +1,12 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Button } from "react-bootstrap";
-import style from "../styles/HomePage.module.css";
-import hello from "../public/images/hello1.png";
-import { authOptions } from "../pages/api/auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth";
 import Link from "next/link";
+import Image from "next/image";
+import { unstable_getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
+import { Button } from "react-bootstrap";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
+import hello from "../public/images/hello1.png";
+import style from "../styles/HomePage.module.css";
 
 export async function getServerSideProps(context) {
   const session = await unstable_getServerSession(

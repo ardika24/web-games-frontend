@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import profile from "../public/images/profile1.png";
 import logo from "../public/images/logo-social1.png";
 
