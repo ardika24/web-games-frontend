@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   round: 1,
-  output: "",
+  output: null,
 };
 
 const roundSlice = createSlice({
@@ -25,7 +25,7 @@ const roundSlice = createSlice({
       state.output = "Draw";
     },
     resetOutput: (state) => {
-      state.output = "";
+      state.output = null;
     },
   },
 });

@@ -1,5 +1,11 @@
+import Head from "next/head";
+import Image from "next/image";
+import { unstable_getServerSession } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Button } from "react-bootstrap";
+import cn from "classnames";
+import { authOptions } from "../../api/auth/[...nextauth]";
 import {
   roundSelector,
   setRound,
@@ -9,20 +15,13 @@ import {
   outputDraw,
   resetOutput,
 } from "../../../store/slices/round";
-import { scoreSelector, currentScore } from "../../../store/slices/score";
 import {
   pointsSelector,
   addPoints,
   resetPoints,
 } from "../../../store/slices/points";
-import { Snackbar, Alert, Button } from "@mui/material";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]";
-import style from "../../../styles/RockPaperScissor.module.css";
-import Image from "next/image";
-import Head from "next/head";
-import cn from "classnames";
 import apiFetch from "../../../utils/apiFetch";
+import style from "../../../styles/RockPaperScissor.module.css";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -34,7 +33,6 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function RockPaperScissor({ user }) {
-  const { score } = useSelector(scoreSelector);
   const { round, output } = useSelector(roundSelector);
   const { points } = useSelector(pointsSelector);
   const dispatch = useDispatch();
@@ -120,11 +118,7 @@ export default function RockPaperScissor({ user }) {
         });
 
         if (response.ok) {
-          dispatch(currentScore());
-          setPoint(true);
-          setTimeout(() => {
-            setPoint(false);
-          }, 2500);
+          alert("You got 10 points");
         }
       }
     }
@@ -138,51 +132,12 @@ export default function RockPaperScissor({ user }) {
   }
 
   function jsx_result() {
-    if (output === "You Win") {
-      return (
-        <div id="snackbar">
-          {/* Round { round - 1 } result: {output} */}
-          <Snackbar
-            open={true}
-            autoHideDuration={1000}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert icon={false} severity="info">
-              Round {round - 1} result: {output}
-            </Alert>
-          </Snackbar>
-        </div>
-      );
-    }
-
-    if (output === "You Lose") {
+    if (output) {
       return (
         <div>
-          <Snackbar
-            open={true}
-            autoHideDuration={1000}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert icon={false} severity="info">
-              Round {round - 1} result: {output}
-            </Alert>
-          </Snackbar>
-        </div>
-      );
-    }
-
-    if (output === "Draw") {
-      return (
-        <div>
-          <Snackbar
-            open={true}
-            autoHideDuration={1000}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert icon={false} severity="info">
-              Round {round - 1} result: {output}
-            </Alert>
-          </Snackbar>
+          <h3>
+            Round {round - 1} result: {output}
+          </h3>
         </div>
       );
     }
@@ -219,31 +174,16 @@ export default function RockPaperScissor({ user }) {
     }, 800);
   };
 
-  function jsx_alert() {
-    return (
-      <div>
-        <Snackbar
-          open={true}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert icon={false} severity="info">
-            You&apos;ve got 10 points!
-          </Alert>
-        </Snackbar>
-      </div>
-    );
-  }
-
   return (
     <>
       <Head>
         <title>Play! | Rock Paper Scissor</title>
       </Head>
       <div>
-        {jsx_result()}
-        {point && jsx_alert()}
+        {/* {point && jsx_alert()} */}
         <div className="row text-light text-center pt-5 mt-5 justify-content-center">
-          <h3>Your total score: {!score ? user.total_score : score}</h3>
+          {/* <h3>Your total score: {!score ? user.total_score : score}</h3> */}
+          {jsx_result()}
           <h5>
             You&apos;ve got {points} points in {round - 1} rounds
           </h5>
@@ -260,9 +200,7 @@ export default function RockPaperScissor({ user }) {
             <h4>
               Current Round: <span>{round}</span>
             </h4>
-            <Button variant="contained" onClick={() => roundReset()}>
-              Reset Round
-            </Button>
+            <Button onClick={() => roundReset()}>Reset Round</Button>
           </div>
         </div>
 
