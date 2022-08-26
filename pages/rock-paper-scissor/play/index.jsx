@@ -132,12 +132,24 @@ export default function RockPaperScissor({ user }) {
   }
 
   function jsx_result() {
-    if (output) {
+    if (output === "You Win") {
       return (
-        <div>
-          <h3>
-            Round {round - 1} result: {output}
-          </h3>
+        <div className={style.snackbar}>
+          Round {round - 1} result: {output}
+        </div>
+      );
+    }
+    if (output === "You Lose") {
+      return (
+        <div className={style.snackbar}>
+          Round {round - 1} result: {output}
+        </div>
+      );
+    }
+    if (output === "Draw") {
+      return (
+        <div className={style.snackbar}>
+          Round {round - 1} result: {output}
         </div>
       );
     }
