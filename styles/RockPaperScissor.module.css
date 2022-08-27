@@ -15,3 +15,16 @@
 .image {
   cursor: pointer;
 }
+
+.snackbar {
+  width: 15em;
+  background-color: rgb(186, 218, 248);
+  color: rgb(134, 133, 133);
+  text-align: center;
+  border-radius: 5px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 2%;
+  bottom: 2em;
+}
