@@ -6,11 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Row, Col, Button, Table, Card } from "react-bootstrap";
 import cn from "classnames";
 import { authOptions } from "../api/auth/[...nextauth]";
-import {
-  addPlayedGames,
-  games,
-  rpsSelector,
-} from "../../store/slices/playedGames";
+import { addPlayedGames, rpsSelector } from "../../store/slices/playedGames";
 import apiFetch from "../../utils/apiFetch";
 import style from "../../styles/GameDetailRPS.module.css";
 
