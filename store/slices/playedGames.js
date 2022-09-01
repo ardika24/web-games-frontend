@@ -14,7 +14,7 @@ const rpsSlice = createSlice({
         title: action.payload,
       });
     },
-    resetPlayedGames: (state, action) => {
+    resetPlayedGames: (state) => {
       state.games = [];
     },
   },

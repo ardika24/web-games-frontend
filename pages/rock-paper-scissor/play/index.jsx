@@ -36,7 +36,6 @@ export default function RockPaperScissor({ user }) {
   const { round, output } = useSelector(roundSelector);
   const { points } = useSelector(pointsSelector);
   const dispatch = useDispatch();
-  const [point, setPoint] = useState(false);
   const [choice, setChoice] = useState("user");
   const [botChoice, setBotChoice] = useState("bot");
 
@@ -123,6 +122,7 @@ export default function RockPaperScissor({ user }) {
       }
     }
     addScore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id, dispatch, user.accessToken, scoreCount.current]);
 
   function roundReset() {
