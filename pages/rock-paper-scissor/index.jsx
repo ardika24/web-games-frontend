@@ -40,6 +40,18 @@ export default function GameDetailRPS({ boards }) {
   const [muted, setMuted] = useState(true);
   const [volume, setVolume] = useState(0.8);
   const [isMounted, setMounted] = useState(false);
+  function volumeUp() {
+    if (volume >= 1) {
+      return setVolume(1);
+    }
+    return setVolume(volume + 0.1);
+  }
+  function volumeDown() {
+    if (volume <= 0.1) {
+      return setVolume(0);
+    }
+    return setVolume(volume - 0.1);
+  }
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -63,12 +75,8 @@ export default function GameDetailRPS({ boards }) {
           <Stack className="mt-3" gap={3} direction="horizontal">
             <Button onClick={() => setPlaying(true)}>Play</Button>
             <Button onClick={() => setPlaying(false)}>Pause</Button>
-            <Button onClick={() => setVolume(volume + 0.1)}>
-              Volume + 0.1
-            </Button>
-            <Button onClick={() => setVolume(volume - 0.1)}>
-              Volume - 0.1
-            </Button>
+            <Button onClick={() => volumeUp()}>Volume + 0.1</Button>
+            <Button onClick={() => volumeDown()}>Volume - 0.1</Button>
             <Button onClick={() => setMuted(true)}>Mute</Button>
             <Button onClick={() => setMuted(false)}>Unmute</Button>
           </Stack>
