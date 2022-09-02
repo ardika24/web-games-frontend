@@ -30,7 +30,7 @@ export default function UserProfile({ profile }) {
   return (
     <>
       <Head>
-        <title>{`${profile.username} Profile Information - Binar Games`}</title>
+        <title>{`${profile.data.username} Profile Information - Binar Games`}</title>
       </Head>
       <div className={style.content}>
         <div className="row justify-content-center">
@@ -38,22 +38,22 @@ export default function UserProfile({ profile }) {
             <div className={style.right}>
               <div className="container p-5">
                 <h2 className="text-center">
-                  {profile.username}&apos;s profile
+                  {profile.data.username}&apos;s profile
                 </h2>
                 <br />
                 <div>
                   <h5>Username:</h5>
-                  <p>{profile.username}</p>
+                  <p>{profile.data.username}</p>
                   <h5>Total Score:</h5>
-                  <p>{profile.total_score}</p>
+                  <p>{profile.data.total_score}</p>
                   <h5>Bio:</h5>
-                  <p>{profile.bio}</p>
+                  <p>{profile.data.bio}</p>
                   <h5>Social Media:</h5>
-                  <p>{profile.social_media_url}</p>
+                  <p>{profile.data.social_media_url}</p>
                   <h5>City:</h5>
-                  <p>{profile.city}</p>
+                  <p>{profile.data.city}</p>
                   <h5>Joined At:</h5>
-                  <p>{dayjs(profile.createdAt).format("MMM D, YYYY")}</p>
+                  <p>{dayjs(profile.data.createdAt).format("MMM D, YYYY")}</p>
                 </div>
               </div>
             </div>
