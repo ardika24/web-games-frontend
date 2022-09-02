@@ -1,4 +1,4 @@
-.rps {
+.tictactoe {
   margin: auto;
   margin-top: 9em;
   display: flex;
@@ -9,4 +9,9 @@
   background-color: #61b7f0;
   width: 40rem;
   height: 25rem;
+}
+
+.video {
+  width: 600px;
+  margin: auto;
 }

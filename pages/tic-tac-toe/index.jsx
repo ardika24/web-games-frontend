@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
+import ReactPlayer from "react-player/youtube";
 import { unstable_getServerSession } from "next-auth";
 import { useSelector, useDispatch } from "react-redux";
-import { Row, Col, Button, Table, Card } from "react-bootstrap";
+import { Button, Table, Stack } from "react-bootstrap";
 import cn from "classnames";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { addPlayedGames, rpsSelector } from "../../store/slices/playedGames";
@@ -35,39 +36,55 @@ export default function GameDetailTTT({ boards }) {
   const { games } = useSelector(rpsSelector);
   const tic = games.find((e) => e.title === "tictactoe");
   const dispatch = useDispatch();
+  const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(true);
+  const [volume, setVolume] = useState(0.8);
+  const [isMounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
     <div>
       <Head>
         <title>Game Detail TTT</title>
       </Head>
-      <section className={style.rps}>
-        <Row>
-          <Col>
-            <Card className="bg-dark text-white">
-              {tic && <h2>*ever played before</h2>}
-              <Image
-                src="/images/tictactoe.png"
-                alt="rps"
-                width="900em"
-                height="450em"
-              />
-              <Card.ImgOverlay className="d-flex align-items-end justify-content-end">
-                <Card.Title>
-                  <Link href="/tic-tac-toe/play" passHref>
-                    <Button
-                      type="button"
-                      variant="primary"
-                      style={{ width: "13rem" }}
-                      onClick={() => dispatch(addPlayedGames("tictactoe"))}
-                    >
-                      PLAY
-                    </Button>
-                  </Link>
-                </Card.Title>
-              </Card.ImgOverlay>
-            </Card>
-          </Col>
-        </Row>
+      <section className={style.tictactoe}>
+        <div className={style.video}>
+          {tic && <h2 className="text-light">*ever played before</h2>}
+          {isMounted && (
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=3qzcAMShotQ"
+              playing={playing}
+              muted={muted}
+              volume={volume}
+              onEnded={() => setPlaying(false)}
+            />
+          )}
+          <Stack className="mt-3" gap={3} direction="horizontal">
+            <Button onClick={() => setPlaying(true)}>Play</Button>
+            <Button onClick={() => setPlaying(false)}>Pause</Button>
+            <Button onClick={() => setVolume(volume + 0.1)}>
+              Volume + 0.1
+            </Button>
+            <Button onClick={() => setVolume(volume - 0.1)}>
+              Volume - 0.1
+            </Button>
+            <Button onClick={() => setMuted(true)}>Mute</Button>
+            <Button onClick={() => setMuted(false)}>Unmute</Button>
+          </Stack>
+
+          <Link href="/tic-tac-toe/play" passHref>
+            <Button
+              type="button"
+              variant="primary"
+              style={{ width: "13rem" }}
+              onClick={() => dispatch(addPlayedGames("tictactoe"))}
+              className="mt-3"
+            >
+              PLAY THIS GAME
+            </Button>
+          </Link>
+        </div>
       </section>
 
       <section>
