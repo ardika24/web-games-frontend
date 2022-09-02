@@ -105,7 +105,7 @@ export default function RockPaperScissor({ user }) {
   useEffect(() => {
     async function addScore() {
       if (scoreCount.current >= 1) {
-        const response = await apiFetch(`/api/v1/user/${user.id}`, {
+        const response = await apiFetch(`/api/v1/games/${user.id}`, {
           method: "PUT",
           body: JSON.stringify({
             total_score: 10,
