@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import profile from "../public/images/profile1.png";
+// import profile from "../public/images/profile1.png";
 import logo from "../public/images/logo-social1.png";
 
 function Header() {
@@ -58,7 +58,15 @@ function Header() {
         <Link href="/my-profile" passHref>
           <Nav.Link>{session.user.username}</Nav.Link>
         </Link>
-        <Image src={profile} alt="profile" />
+        <Image
+          width="50em"
+          height="50em"
+          src={session.user.profile_pic ?? "/images/profile-pic.jpg"}
+          alt="profile-pic"
+          className="img-fluid rounded-circle border border-dark"
+          role="button"
+          priority
+        />
 
         <Nav.Link onClick={() => signOut()}>Logout</Nav.Link>
       </Nav>
