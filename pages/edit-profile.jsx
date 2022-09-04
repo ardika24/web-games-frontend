@@ -31,6 +31,56 @@ export default function EditProfile({ user, cloudinarySign }) {
   const [imageSrc, setImageSrc] = useState();
   const [cloudinaryData, setCloudinaryData] = useState();
 
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    if (loading) return;
+
+    setLoading(true);
+
+    const response = await apiFetch(`/api/v1/user/${user.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        username,
+        social_media_url: socmed,
+        city,
+        bio,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: user.accessToken,
+      }),
+    });
+
+    if (response.ok) {
+      swal("Good job!", "Updated Success", "success", {
+        buttons: {
+          OK: {
+            value: "OK",
+          },
+        },
+      }).then((value) => {
+        switch (value) {
+          case "OK":
+            router.push("/my-profile").then(() => router.reload());
+            break;
+        }
+      });
+      setLoading(false);
+    } else {
+      const data = await response.json();
+      setLoading(false);
+      if (data && data.error) {
+        if (data.error.name === "SequelizeUniqueConstraintError") {
+          swal("Username already taken! Please choose another one", {
+            icon: "warning",
+            buttons: true,
+          });
+        }
+      }
+    }
+  }
+
   function handleOnChange(changeEvent) {
     if (!changeEvent.target.files[0]) {
       setImageSrc(undefined);
@@ -48,7 +98,7 @@ export default function EditProfile({ user, cloudinarySign }) {
     reader.readAsDataURL(changeEvent.target.files[0]);
   }
 
-  async function onSubmit(event) {
+  async function onSubmitPic(event) {
     event.preventDefault();
 
     if (loading) return;
@@ -89,20 +139,18 @@ export default function EditProfile({ user, cloudinarySign }) {
     setImageSrc(uploadData.secure_url);
     setCloudinaryData(uploadData);
     // console.log(uploadData.url);
+
     const response = await apiFetch(`/api/v1/user/${user.id}`, {
       method: "PUT",
       body: JSON.stringify({
-        username,
-        social_media_url: socmed,
-        city,
-        bio,
-        profile_pic: uploadData.secure_url ?? "",
+        profile_pic: uploadData.secure_url,
       }),
       headers: new Headers({
         "Content-Type": "application/json; charset=UTF-8",
         Authorization: user.accessToken,
       }),
     });
+
     if (response.ok && uploadData) {
       swal("Good job!", "Updated Success", "success", {
         buttons: {
@@ -118,17 +166,6 @@ export default function EditProfile({ user, cloudinarySign }) {
         }
       });
       setLoading(false);
-    } else {
-      const data = await response.json();
-      setLoading(false);
-      if (data && data.error) {
-        if (data.error.name === "SequelizeUniqueConstraintError") {
-          swal("Username already taken! Please choose another one", {
-            icon: "warning",
-            buttons: true,
-          });
-        }
-      }
     }
   }
 
@@ -172,10 +209,46 @@ export default function EditProfile({ user, cloudinarySign }) {
                     priority
                   />
                   <Form
-                    onSubmit={onSubmit}
                     onChange={handleOnChange}
+                    onSubmit={onSubmitPic}
                     className={style.form}
                   >
+                    <Form.Group
+                      as={Col}
+                      md="7"
+                      controlId="formFile"
+                      className="mt-3"
+                    >
+                      <Form.Label>Add Profile Picture</Form.Label>
+                      <Form.Control
+                        name="formFile"
+                        type="file"
+                        accept="image/*"
+                      />
+                    </Form.Group>
+                    {imageSrc && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={imageSrc}
+                        alt="Image Upload Result"
+                        width="50%"
+                        className="mt-3"
+                      />
+                    )}
+                    <div className="row justify-content-center mt-4">
+                      {imageSrc && !cloudinaryData && (
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          disabled={loading}
+                          className={style.loginButton}
+                        >
+                          {loading ? "Loading..." : "Submit"}
+                        </Button>
+                      )}
+                    </div>
+                  </Form>
+                  <Form onSubmit={onSubmit} className={style.form}>
                     <Form.Group as={Col} md="7" controlId="username">
                       <Form.Label>Username</Form.Label>
                       <Form.Control
@@ -234,40 +307,10 @@ export default function EditProfile({ user, cloudinarySign }) {
                       </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="7"
-                      controlId="formFile"
-                      className="mt-3"
-                    >
-                      <Form.Label>Add Profile Picture</Form.Label>
-                      <Form.Control
-                        name="formFile"
-                        type="file"
-                        accept="image/*"
-                      />
-                    </Form.Group>
-
-                    {imageSrc && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={imageSrc}
-                        alt="Image Upload Result"
-                        width="50%"
-                        className="mt-3"
-                      />
-                    )}
                     <div className="row justify-content-center mt-4">
-                      {imageSrc && !cloudinaryData && (
-                        <Button
-                          variant="primary"
-                          type="submit"
-                          disabled={loading}
-                          className={style.loginButton}
-                        >
-                          {loading ? "Loading..." : "Submit"}
-                        </Button>
-                      )}
+                      <Button type="submit" className={style.loginButton}>
+                        {loading ? "Loading..." : "Update"}
+                      </Button>
                     </div>
                   </Form>
                 </Row>
