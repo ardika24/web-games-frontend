@@ -9,31 +9,86 @@ import swal from "sweetalert";
 import { authOptions } from "./api/auth/[...nextauth]";
 import apiFetch from "../utils/apiFetch";
 import style from "../styles/EditProfile.module.css";
+import { signUpload } from "../utils/cloudinary.server";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
+  const cloudinarySign = signUpload();
 
   const user = session.user;
   return {
-    props: { user },
+    props: { user, cloudinarySign },
   };
 }
 
-export default function EditProfile({ user }) {
+export default function EditProfile({ user, cloudinarySign }) {
   const router = useRouter();
   const [username, setUsername] = useState(user.username);
   const [socmed, setSocMed] = useState(user.social_media_url ?? "");
   const [city, setCity] = useState(user.city ?? "");
   const [bio, setBio] = useState(user.bio ?? "");
   const [loading, setLoading] = useState(false);
+  const [imageSrc, setImageSrc] = useState();
+  const [cloudinaryData, setCloudinaryData] = useState();
+
+  function handleOnChange(changeEvent) {
+    if (!changeEvent.target.files[0]) {
+      setImageSrc(undefined);
+      setCloudinaryData(undefined);
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (onLoadEvent) {
+      setImageSrc(onLoadEvent.target.result);
+      setCloudinaryData(undefined);
+    };
+
+    reader.readAsDataURL(changeEvent.target.files[0]);
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
 
     if (loading) return;
 
+    const form = event.currentTarget;
+    const fileInput = Array.from(form.elements).find(
+      ({ name }) => name === "formFile"
+    );
+
+    // If developer forgot to create the file input or file input with the name declared above
+    if (!fileInput) {
+      throw new Error(
+        "The file input is not found. Make sure you define it on your Form"
+      );
+    }
+
+    // If no files to submit then just return
+    if (fileInput.files.length < 1) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    formData.append("api_key", cloudinarySign.apiKey);
+    formData.append("timestamp", cloudinarySign.timestamp);
+    formData.append("signature", cloudinarySign.signature);
+    formData.append("folder", "my-first-folder");
+
     setLoading(true);
 
+    const url = `https://api.cloudinary.com/v1_1/${cloudinarySign.cloudName}/auto/upload`;
+    const uploadResponse = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    const uploadData = await uploadResponse.json();
+    setImageSrc(uploadData.secure_url);
+    setCloudinaryData(uploadData);
+    // console.log(uploadData.url);
     const response = await apiFetch(`/api/v1/user/${user.id}`, {
       method: "PUT",
       body: JSON.stringify({
@@ -41,14 +96,14 @@ export default function EditProfile({ user }) {
         social_media_url: socmed,
         city,
         bio,
+        profile_pic: uploadData.secure_url ?? "",
       }),
       headers: new Headers({
         "Content-Type": "application/json; charset=UTF-8",
         Authorization: user.accessToken,
       }),
     });
-
-    if (response.ok) {
+    if (response.ok && uploadData) {
       swal("Good job!", "Updated Success", "success", {
         buttons: {
           OK: {
@@ -107,7 +162,20 @@ export default function EditProfile({ user }) {
                 <h2 className="text-center">EDIT PROFILE</h2>
                 <br />
                 <Row className="row justify-content-center">
-                  <Form onSubmit={onSubmit} className={style.form}>
+                  <Image
+                    width="100em"
+                    height="100em"
+                    src={user.profile_pic ?? "/images/profile-pic.jpg"}
+                    alt="cartoon"
+                    className="img-fluid rounded-circle border border-dark"
+                    role="button"
+                    priority
+                  />
+                  <Form
+                    onSubmit={onSubmit}
+                    onChange={handleOnChange}
+                    className={style.form}
+                  >
                     <Form.Group as={Col} md="7" controlId="username">
                       <Form.Label>Username</Form.Label>
                       <Form.Control
@@ -165,10 +233,41 @@ export default function EditProfile({ user }) {
                         Please provide a bio.
                       </Form.Control.Feedback>
                     </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="7"
+                      controlId="formFile"
+                      className="mt-3"
+                    >
+                      <Form.Label>Add Profile Picture</Form.Label>
+                      <Form.Control
+                        name="formFile"
+                        type="file"
+                        accept="image/*"
+                      />
+                    </Form.Group>
+
+                    {imageSrc && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={imageSrc}
+                        alt="Image Upload Result"
+                        width="50%"
+                        className="mt-3"
+                      />
+                    )}
                     <div className="row justify-content-center mt-4">
-                      <Button type="submit" className={style.loginButton}>
-                        {loading ? "Loading..." : "Update"}
-                      </Button>
+                      {imageSrc && !cloudinaryData && (
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          disabled={loading}
+                          className={style.loginButton}
+                        >
+                          {loading ? "Loading..." : "Submit"}
+                        </Button>
+                      )}
                     </div>
                   </Form>
                 </Row>
