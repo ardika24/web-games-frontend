@@ -48,6 +48,15 @@ export default function MyProfile(session) {
               <div className="container p-4">
                 <h2 className="text-center">YOUR PROFILE</h2>
                 <br />
+                <Image
+                  width="100em"
+                  height="100em"
+                  src={session.user.profile_pic ?? "/images/profile-pic.jpg"}
+                  alt="profile-pic"
+                  className="img-fluid rounded-circle border border-dark"
+                  role="button"
+                  priority
+                />
                 <div>
                   <h5>Email:</h5>
                   <p>{session.user.email}</p>
