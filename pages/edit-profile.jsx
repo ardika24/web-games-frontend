@@ -8,8 +8,8 @@ import cn from "classnames";
 import swal from "sweetalert";
 import { authOptions } from "./api/auth/[...nextauth]";
 import apiFetch from "../utils/apiFetch";
-import style from "../styles/EditProfile.module.css";
 import { signUpload } from "../utils/cloudinary.server";
+import style from "../styles/EditProfile.module.css";
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -138,7 +138,6 @@ export default function EditProfile({ user, cloudinarySign }) {
     const uploadData = await uploadResponse.json();
     setImageSrc(uploadData.secure_url);
     setCloudinaryData(uploadData);
-    // console.log(uploadData.url);
 
     const response = await apiFetch(`/api/v1/user/${user.id}`, {
       method: "PUT",
@@ -205,7 +204,6 @@ export default function EditProfile({ user, cloudinarySign }) {
                     src={user.profile_pic ?? "/images/profile-pic.jpg"}
                     alt="cartoon"
                     className="img-fluid rounded-circle border border-dark"
-                    role="button"
                     priority
                   />
                   <Form
