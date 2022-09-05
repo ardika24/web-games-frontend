@@ -108,14 +108,14 @@ export default function GameDetailRPS({ boards }) {
           <div className={style.social}>
             <RedditShareButton
               style={{ marginRight: "1em" }}
-              url={"http://ch11-web-frontend.vercel.app/"}
+              url={"https://ch11-web-frontend.vercel.app/"}
               title={"Play Free Online Games - Binar Games."}
             >
               <RedditIcon size={32} round />
             </RedditShareButton>
             <FacebookShareButton
               style={{ marginRight: "1em" }}
-              url={"http://ch11-web-frontend.vercel.app/"}
+              url={"https://ch11-web-frontend.vercel.app/"}
               quote={"Play Free Online Games - Binar Games."}
               hashtag={"#BinarGames"}
             >
@@ -123,21 +123,21 @@ export default function GameDetailRPS({ boards }) {
             </FacebookShareButton>
             <TwitterShareButton
               style={{ marginRight: "1em" }}
-              url={"http://ch11-web-frontend.vercel.app/"}
+              url={"https://ch11-web-frontend.vercel.app/"}
               title={"Play Free Online Games - Binar Games."}
             >
               <TwitterIcon size={32} round />
             </TwitterShareButton>
             <TelegramShareButton
               style={{ marginRight: "1em" }}
-              url={"http://ch11-web-frontend.vercel.app/"}
+              url={"https://ch11-web-frontend.vercel.app/"}
               title={"Play Free Online Games - Binar Games."}
             >
               <TelegramIcon size={32} round />
             </TelegramShareButton>
             <WhatsappShareButton
               style={{ marginRight: "1em" }}
-              url={"http://ch11-web-frontend.vercel.app/"}
+              url={"https://ch11-web-frontend.vercel.app/"}
               title={"Play Free Online Games - Binar Games."}
               separator=":: "
             >
