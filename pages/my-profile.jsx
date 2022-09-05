@@ -54,7 +54,6 @@ export default function MyProfile(session) {
                   src={session.user.profile_pic ?? "/images/profile-pic.jpg"}
                   alt="profile-pic"
                   className="img-fluid rounded-circle border border-dark"
-                  role="button"
                   priority
                 />
                 <div>

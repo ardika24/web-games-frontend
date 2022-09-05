@@ -1,8 +1,20 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import ReactPlayer from "react-player/youtube";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  RedditShareButton,
+  RedditIcon,
+  TelegramShareButton,
+  TelegramIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+} from "next-share";
 import { unstable_getServerSession } from "next-auth";
+import { useEffect, useState } from "react";
+import ReactPlayer from "react-player/youtube";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Table, Stack } from "react-bootstrap";
 import cn from "classnames";
@@ -84,6 +96,46 @@ export default function GameDetailTTT({ boards }) {
               PLAY THIS GAME
             </Button>
           </Link>
+
+          <div className={style.social}>
+            <RedditShareButton
+              style={{ marginRight: "1em" }}
+              url={"https://ch11-web-frontend.vercel.app/"}
+              title={"Play Free Online Games - Binar Games."}
+            >
+              <RedditIcon size={32} round />
+            </RedditShareButton>
+            <FacebookShareButton
+              style={{ marginRight: "1em" }}
+              url={"https://ch11-web-frontend.vercel.app/"}
+              quote={"Play Free Online Games - Binar Games."}
+              hashtag={"#BinarGames"}
+            >
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <TwitterShareButton
+              style={{ marginRight: "1em" }}
+              url={"https://ch11-web-frontend.vercel.app/"}
+              title={"Play Free Online Games - Binar Games."}
+            >
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <TelegramShareButton
+              style={{ marginRight: "1em" }}
+              url={"https://ch11-web-frontend.vercel.app/"}
+              title={"Play Free Online Games - Binar Games."}
+            >
+              <TelegramIcon size={32} round />
+            </TelegramShareButton>
+            <WhatsappShareButton
+              style={{ marginRight: "1em" }}
+              url={"https://ch11-web-frontend.vercel.app/"}
+              title={"Play Free Online Games - Binar Games."}
+              separator=":: "
+            >
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+          </div>
         </div>
       </section>
 

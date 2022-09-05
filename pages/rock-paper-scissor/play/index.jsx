@@ -192,11 +192,9 @@ export default function RockPaperScissor({ user }) {
         <title>Play! | Rock Paper Scissor</title>
       </Head>
       <div>
-        {/* {point && jsx_alert()} */}
         <div className="row text-light text-center pt-5 mt-5 justify-content-center">
-          {/* <h3>Your total score: {!score ? user.total_score : score}</h3> */}
           {jsx_result()}
-          <h5>
+          <h5 className="mt-3">
             You&apos;ve got {points} points in {round - 1} rounds
           </h5>
           <div className="col">
