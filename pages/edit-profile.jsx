@@ -125,7 +125,7 @@ export default function EditProfile({ user, cloudinarySign }) {
     formData.append("api_key", cloudinarySign.apiKey);
     formData.append("timestamp", cloudinarySign.timestamp);
     formData.append("signature", cloudinarySign.signature);
-    formData.append("folder", "my-first-folder");
+    formData.append("folder", "profile-pictures");
 
     setLoading(true);
 
