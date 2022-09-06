@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { authOptions } from "../api/auth/[...nextauth]";
 import apiFetch from "../../utils/apiFetch";
 import style from "../../styles/UserProfile.module.css";
+import Image from "next/image";
 
 export async function getServerSideProps({ req, res, params }) {
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -42,6 +43,14 @@ export default function UserProfile({ profile }) {
                 </h2>
                 <br />
                 <div>
+                  <Image
+                    width="100em"
+                    height="100em"
+                    src={profile.data.profile_pic ?? "/images/profile-pic.jpg"}
+                    alt="cartoon"
+                    className="img-fluid rounded-circle border border-dark"
+                    priority
+                  />
                   <h5>Username:</h5>
                   <p>{profile.data.username}</p>
                   <h5>Total Score:</h5>
